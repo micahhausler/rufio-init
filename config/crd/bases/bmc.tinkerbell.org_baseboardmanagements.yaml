@@ -9,9 +9,13 @@ metadata:
 spec:
   group: bmc.tinkerbell.org
   names:
+    categories:
+    - tinkerbell
     kind: BaseboardManagement
     listKind: BaseboardManagementList
     plural: baseboardmanagements
+    shortNames:
+    - bm
     singular: baseboardmanagement
   scope: Namespaced
   versions:
@@ -36,13 +40,70 @@ spec:
           spec:
             description: BaseboardManagementSpec defines the desired state of BaseboardManagement
             properties:
-              foo:
-                description: Foo is an example field of BaseboardManagement. Edit
-                  baseboardmanagement_types.go to remove/update
+              authSecretRef:
+                description: AuthSecretRef is the SecretReference that contains authentication
+                  information of the BaseboardManagement. The Secret must contain
+                  username and password keys.
+                properties:
+                  name:
+                    description: Name is unique within a namespace to reference a
+                      secret resource.
+                    type: string
+                  namespace:
+                    description: Namespace defines the space within which the secret
+                      name must be unique.
+                    type: string
+                type: object
+              boot:
+                description: Boot is the desired boot device for the BaseboardManagement.
+                properties:
+                  bootDevice:
+                    description: BootDevice is the desired boot for the BaseboardManagement.
+                    minLength: 1
+                    type: string
+                  efiBoot:
+                    default: false
+                    description: EfiBoot specifies to EFI boot for the BaseboardManagement.
+                    type: boolean
+                  persistent:
+                    default: false
+                    description: Persistent if True, boot device is permanently set
+                      for the BaseboardManagement. If False, boot device is set as
+                      one time boot.
+                    type: boolean
+                required:
+                - bootDevice
+                type: object
+              host:
+                description: Host is the host IP address of the BaseboardManagement.
+                minLength: 1
                 type: string
+              power:
+                description: Power is the desired power state of the BaseboardManagement.
+                minLength: 1
+                type: string
+              vendor:
+                description: Vendor is the vendor name of the BaseboardManagement.
+                minLength: 1
+                type: string
+            required:
+            - authSecretRef
+            - boot
+            - host
+            - power
+            - vendor
             type: object
           status:
             description: BaseboardManagementStatus defines the observed state of BaseboardManagement
+            properties:
+              bootState:
+                description: BaseboardManagementState represents the BaseboardManagement
+                  state.
+                type: string
+              powerState:
+                description: BaseboardManagementState represents the BaseboardManagement
+                  state.
+                type: string
             type: object
         type: object
     served: true

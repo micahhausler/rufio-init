@@ -17,29 +17,63 @@ limitations under the License.
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
+// BaseboardManagementState represents the BaseboardManagement state.
+type BaseboardManagementState string
+
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // BaseboardManagementSpec defines the desired state of BaseboardManagement
 type BaseboardManagementSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	// Host is the host IP address of the BaseboardManagement.
+	// +kubebuilder:validation:MinLength=1
+	Host string `json:"host"`
 
-	// Foo is an example field of BaseboardManagement. Edit baseboardmanagement_types.go to remove/update
-	Foo string `json:"foo,omitempty"`
+	// AuthSecretRef is the SecretReference that contains authentication information of the BaseboardManagement.
+	// The Secret must contain username and password keys.
+	AuthSecretRef corev1.SecretReference `json:"authSecretRef"`
+
+	// Vendor is the vendor name of the BaseboardManagement.
+	// +kubebuilder:validation:MinLength=1
+	Vendor string `json:"vendor"`
+
+	// Power is the desired power state of the BaseboardManagement.
+	// +kubebuilder:validation:MinLength=1
+	Power string `json:"power"`
+
+	// Boot is the desired boot device for the BaseboardManagement.
+	Boot Boot `json:"boot"`
+}
+
+type Boot struct {
+	// BootDevice is the desired boot for the BaseboardManagement.
+	// +kubebuilder:validation:MinLength=1
+	BootDevice string `json:"bootDevice"`
+
+	// Persistent if True, boot device is permanently set for the BaseboardManagement.
+	// If False, boot device is set as one time boot.
+	// +kubebuilder:default=false
+	Persistent bool `json:"persistent,omitempty"`
+
+	// EfiBoot specifies to EFI boot for the BaseboardManagement.
+	// +kubebuilder:default=false
+	EfiBoot bool `json:"efiBoot,omitempty"`
 }
 
 // BaseboardManagementStatus defines the observed state of BaseboardManagement
 type BaseboardManagementStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	//+optional
+	Power BaseboardManagementState `json:"powerState,omitempty"`
+	//+optional
+	Boot BaseboardManagementState `json:"bootState,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
+//+kubebuilder:resource:path=baseboardmanagements,scope=Namespaced,categories=tinkerbell,singular=baseboardmanagement,shortName=bm
 
 // BaseboardManagement is the Schema for the baseboardmanagements API
 type BaseboardManagement struct {
