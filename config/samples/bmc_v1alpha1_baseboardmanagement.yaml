@@ -3,4 +3,12 @@ kind: BaseboardManagement
 metadata:
   name: baseboardmanagement-sample
 spec:
-  # TODO(user): Add fields here
+  host: 0.0.0.0
+  authSecretRef:
+    name: bm-auth
+    namespace: sample
+  vendor: Dell
+  power: "ON"
+  boot:
+    bootDevice: "PXE"
+    persistent: true
