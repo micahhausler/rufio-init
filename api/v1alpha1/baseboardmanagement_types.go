@@ -27,17 +27,25 @@ type PowerState string
 // BootDevice represents boot device of the BaseboardManagement.
 type BootDevice string
 
+// BaseboardManagementConditionType represents the condition of the BaseboardManagement.
+type BaseboardManagementConditionType string
+
 const (
 	On  PowerState = "on"
 	Off PowerState = "off"
 )
 
 const (
-	Pxe   BootDevice = "pxe"
+	PXE   BootDevice = "pxe"
 	Disk  BootDevice = "disk"
-	Bios  BootDevice = "bios"
-	Cdrom BootDevice = "cdrom"
+	BIOS  BootDevice = "bios"
+	CDROM BootDevice = "cdrom"
 	Safe  BootDevice = "safe"
+)
+
+const (
+	// ConnectionError represents failure to connect to the BaseboardManagement.
+	ConnectionError BaseboardManagementConditionType = "ConnectionError"
 )
 
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
@@ -77,18 +85,19 @@ type BaseboardManagementStatus struct {
 	// +optional
 	Power PowerState `json:"powerState,omitempty"`
 
-	// BootDevice is the current first BootDevice of the BaseboardManagement.
+	// Conditions represents the latest available observations of an object's current state.
 	// +optional
-	// +kubebuilder:validation:Enum=Pxe;Disk;Bios;Cdrom;Safe
-	BootDevice BootDevice `json:"bootState,omitempty"`
+	Conditions []BaseboardManagementCondition `json:"conditions,omitempty"`
+}
 
-	// ErrorMessage represents cause of failure to set desired BaseboardManagement state.
+type BaseboardManagementCondition struct {
+	// Type of the BaseboardManagement condition.
 	// +optional
-	ErrorMessage string `json:"errorMessage,omitempty"`
+	Type BaseboardManagementConditionType `json:"type,omitempty"`
 
-	// Version is the current BaseboardManagement version.
+	// Message represents human readable message indicating details about last transition.
 	// +optional
-	Version string `json:"version,omitempty"`
+	Message string `json:"message,omitempty"`
 }
 
 //+kubebuilder:object:root=true
