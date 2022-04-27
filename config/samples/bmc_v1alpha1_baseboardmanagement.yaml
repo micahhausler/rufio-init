@@ -9,5 +9,4 @@ spec:
       name: bm-auth
       namespace: sample
     insecureTLS: false
-  vendor: Dell
   power: "on"

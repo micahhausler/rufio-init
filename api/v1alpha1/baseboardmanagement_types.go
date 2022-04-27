@@ -59,10 +59,6 @@ type BaseboardManagementSpec struct {
 	// Power is the desired power state of the BaseboardManagement.
 	// +kubebuilder:validation:Enum=On;Off
 	Power PowerState `json:"power"`
-
-	// Vendor is the vendor name of the BaseboardManagement.
-	// +kubebuilder:validation:MinLength=1
-	Vendor string `json:"vendor"`
 }
 
 type Connection struct {
@@ -92,8 +88,7 @@ type BaseboardManagementStatus struct {
 
 type BaseboardManagementCondition struct {
 	// Type of the BaseboardManagement condition.
-	// +optional
-	Type BaseboardManagementConditionType `json:"type,omitempty"`
+	Type BaseboardManagementConditionType `json:"type"`
 
 	// Message represents human readable message indicating details about last transition.
 	// +optional
