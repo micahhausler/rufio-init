@@ -21,14 +21,44 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// BaseboardManagementState represents the BaseboardManagement state.
-type BaseboardManagementState string
+// PowerState represents power state the BaseboardManagement.
+type PowerState string
+
+// BootDevice represents boot device of the BaseboardManagement.
+type BootDevice string
+
+const (
+	On  PowerState = "on"
+	Off PowerState = "off"
+)
+
+const (
+	Pxe   BootDevice = "pxe"
+	Disk  BootDevice = "disk"
+	Bios  BootDevice = "bios"
+	Cdrom BootDevice = "cdrom"
+	Safe  BootDevice = "safe"
+)
 
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // BaseboardManagementSpec defines the desired state of BaseboardManagement
 type BaseboardManagementSpec struct {
-	// Host is the host IP address of the BaseboardManagement.
+
+	// Connection represents the BaseboardManagement connectivity information.
+	Connection Connection `json:"connection"`
+
+	// Power is the desired power state of the BaseboardManagement.
+	// +kubebuilder:validation:Enum=On;Off
+	Power PowerState `json:"power"`
+
+	// Vendor is the vendor name of the BaseboardManagement.
+	// +kubebuilder:validation:MinLength=1
+	Vendor string `json:"vendor"`
+}
+
+type Connection struct {
+	// Host is the host IP address or hostname of the BaseboardManagement.
 	// +kubebuilder:validation:MinLength=1
 	Host string `json:"host"`
 
@@ -36,39 +66,29 @@ type BaseboardManagementSpec struct {
 	// The Secret must contain username and password keys.
 	AuthSecretRef corev1.SecretReference `json:"authSecretRef"`
 
-	// Vendor is the vendor name of the BaseboardManagement.
-	// +kubebuilder:validation:MinLength=1
-	Vendor string `json:"vendor"`
-
-	// Power is the desired power state of the BaseboardManagement.
-	// +kubebuilder:validation:MinLength=1
-	Power string `json:"power"`
-
-	// Boot is the desired boot device for the BaseboardManagement.
-	Boot Boot `json:"boot"`
-}
-
-type Boot struct {
-	// BootDevice is the desired boot for the BaseboardManagement.
-	// +kubebuilder:validation:MinLength=1
-	BootDevice string `json:"bootDevice"`
-
-	// Persistent if True, boot device is permanently set for the BaseboardManagement.
-	// If False, boot device is set as one time boot.
-	// +kubebuilder:default=false
-	Persistent bool `json:"persistent,omitempty"`
-
-	// EfiBoot specifies to EFI boot for the BaseboardManagement.
-	// +kubebuilder:default=false
-	EfiBoot bool `json:"efiBoot,omitempty"`
+	// InsecureTLS specifies trusted TLS connections.
+	InsecureTLS bool `json:"insecureTLS"`
 }
 
 // BaseboardManagementStatus defines the observed state of BaseboardManagement
 type BaseboardManagementStatus struct {
-	//+optional
-	Power BaseboardManagementState `json:"powerState,omitempty"`
-	//+optional
-	Boot BaseboardManagementState `json:"bootState,omitempty"`
+	// Power is the current power state of the BaseboardManagement.
+	// +kubebuilder:validation:Enum=On;Off
+	// +optional
+	Power PowerState `json:"powerState,omitempty"`
+
+	// BootDevice is the current first BootDevice of the BaseboardManagement.
+	// +optional
+	// +kubebuilder:validation:Enum=Pxe;Disk;Bios;Cdrom;Safe
+	BootDevice BootDevice `json:"bootState,omitempty"`
+
+	// ErrorMessage represents cause of failure to set desired BaseboardManagement state.
+	// +optional
+	ErrorMessage string `json:"errorMessage,omitempty"`
+
+	// Version is the current BaseboardManagement version.
+	// +optional
+	Version string `json:"version,omitempty"`
 }
 
 //+kubebuilder:object:root=true

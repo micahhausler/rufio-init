@@ -3,12 +3,11 @@ kind: BaseboardManagement
 metadata:
   name: baseboardmanagement-sample
 spec:
-  host: 0.0.0.0
-  authSecretRef:
-    name: bm-auth
-    namespace: sample
+  connection:
+    host: 0.0.0.0
+    authSecretRef:
+      name: bm-auth
+      namespace: sample
+    insecureTLS: false
   vendor: Dell
-  power: "ON"
-  boot:
-    bootDevice: "PXE"
-    persistent: true
+  power: "on"
