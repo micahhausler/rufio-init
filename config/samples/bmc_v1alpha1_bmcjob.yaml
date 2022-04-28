@@ -1,6 +1,6 @@
 apiVersion: bmc.tinkerbell.org/v1alpha1
-kind: PowerCycleJob
+kind: BMCJob
 metadata:
-  name: powercyclejob-sample
+  name: bmcjob-sample
 spec:
   # TODO(user): Add fields here
