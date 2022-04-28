@@ -5,20 +5,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
   creationTimestamp: null
-  name: powercyclejobs.bmc.tinkerbell.org
+  name: bmcjobs.bmc.tinkerbell.org
 spec:
   group: bmc.tinkerbell.org
   names:
-    kind: PowerCycleJob
-    listKind: PowerCycleJobList
-    plural: powercyclejobs
-    singular: powercyclejob
+    kind: BMCJob
+    listKind: BMCJobList
+    plural: bmcjobs
+    singular: bmcjob
   scope: Namespaced
   versions:
   - name: v1alpha1
     schema:
       openAPIV3Schema:
-        description: PowerCycleJob is the Schema for the powercyclejobs API
+        description: BMCJob is the Schema for the bmcjobs API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -33,15 +33,15 @@ spec:
           metadata:
             type: object
           spec:
-            description: PowerCycleJobSpec defines the desired state of PowerCycleJob
+            description: BMCJobSpec defines the desired state of BMCJob
             properties:
               foo:
-                description: Foo is an example field of PowerCycleJob. Edit powercyclejob_types.go
+                description: Foo is an example field of BMCJob. Edit bmcjob_types.go
                   to remove/update
                 type: string
             type: object
           status:
-            description: PowerCycleJobStatus defines the observed state of PowerCycleJob
+            description: BMCJobStatus defines the observed state of BMCJob
             type: object
         type: object
     served: true

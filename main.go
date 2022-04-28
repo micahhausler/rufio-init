@@ -85,11 +85,11 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "BaseboardManagement")
 		os.Exit(1)
 	}
-	if err = (&controllers.PowerCycleJobReconciler{
+	if err = (&controllers.BMCJobReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "PowerCycleJob")
+		setupLog.Error(err, "unable to create controller", "controller", "BMCJob")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

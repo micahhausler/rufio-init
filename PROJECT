@@ -19,7 +19,7 @@ resources:
   controller: true
   domain: tinkerbell.org
   group: bmc
-  kind: PowerCycleJob
+  kind: BMCJob
   path: github.com/tinkerbell/rufio/api/v1alpha1
   version: v1alpha1
 version: "3"
