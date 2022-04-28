@@ -31,8 +31,12 @@ type BootDevice string
 type BaseboardManagementConditionType string
 
 const (
-	On  PowerState = "on"
-	Off PowerState = "off"
+	On     PowerState = "on"
+	Off    PowerState = "off"
+	Status PowerState = "status"
+	Cycle  PowerState = "cycle"
+	Reset  PowerState = "reset"
+	Soft   PowerState = "soft"
 )
 
 const (
