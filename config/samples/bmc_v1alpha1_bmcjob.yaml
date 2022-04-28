@@ -3,4 +3,12 @@ kind: BMCJob
 metadata:
   name: bmcjob-sample
 spec:
-  # TODO(user): Add fields here
+  tasks:
+    - powerAction:
+        state: "off"
+    - bootAction:
+        bootDevice: "pxe"
+        persistent: "false"
+        efiBoot: "false"
+    - powerAction:
+        state: "on"

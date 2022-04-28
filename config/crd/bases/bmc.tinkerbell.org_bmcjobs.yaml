@@ -9,9 +9,13 @@ metadata:
 spec:
   group: bmc.tinkerbell.org
   names:
+    categories:
+    - tinkerbell
     kind: BMCJob
     listKind: BMCJobList
     plural: bmcjobs
+    shortNames:
+    - bmj
     singular: bmcjob
   scope: Namespaced
   versions:
@@ -35,13 +39,95 @@ spec:
           spec:
             description: BMCJobSpec defines the desired state of BMCJob
             properties:
-              foo:
-                description: Foo is an example field of BMCJob. Edit bmcjob_types.go
-                  to remove/update
-                type: string
+              tasks:
+                description: Tasks represents a list of baseboard management actions
+                  to be executed. The tasks are completed in order.
+                items:
+                  description: Task represents the action to be performed. A single
+                    task can only perform one type of action. For example either PowerAction
+                    or BootAction.
+                  maxProperties: 1
+                  properties:
+                    bootAction:
+                      description: BootAction represents a baseboard management boot
+                        device operation.
+                      properties:
+                        bootDevice:
+                          description: BootDevice represents the requested boot device
+                            to set.
+                          enum:
+                          - PXE
+                          - Disk
+                          - BIOS
+                          - CDROM
+                          - Safe
+                          type: string
+                        efiBoot:
+                          default: false
+                          description: EfiBoot specifies to EFI boot for the baseboard
+                            management.
+                          type: boolean
+                        persistent:
+                          default: false
+                          description: Persistent if True, boot device is permanently
+                            set for the baseboard management. If False, boot device
+                            is set as one time boot.
+                          type: boolean
+                      required:
+                      - bootDevice
+                      type: object
+                    powerAction:
+                      description: PowerAction represents a baseboard management power
+                        operation.
+                      properties:
+                        state:
+                          description: State represents the requested power state
+                            to set for the baseboard management.
+                          enum:
+                          - "On"
+                          - "Off"
+                          - Status
+                          - Cycle
+                          - Reset
+                          - Soft
+                          type: string
+                      required:
+                      - state
+                      type: object
+                  type: object
+                type: array
+            required:
+            - tasks
             type: object
           status:
             description: BMCJobStatus defines the observed state of BMCJob
+            properties:
+              completionTime:
+                description: CompletionTime represents time when the job was completed.
+                  The completion time is only set when the job finishes successfully.
+                format: date-time
+                type: string
+              conditions:
+                description: Conditions represents the latest available observations
+                  of an object's current state.
+                items:
+                  properties:
+                    message:
+                      description: Message represents human readable message indicating
+                        details about last transition.
+                      type: string
+                    type:
+                      description: Type of the BMCJob condition.
+                      type: string
+                  required:
+                  - type
+                  type: object
+                type: array
+              startTime:
+                description: StartTime represents time when the BMCJob controller
+                  started processing a job.
+                format: date-time
+                type: string
             type: object
         type: object
     served: true
