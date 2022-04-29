@@ -5,10 +5,9 @@ metadata:
 spec:
   tasks:
     - powerAction:
-        state: "off"
-    - bootAction:
-        bootDevice: "pxe"
-        persistent: "false"
+        powerControl: "off"
+    - oneTimeBootDeviceAction:
+        device: "pxe"
         efiBoot: "false"
     - powerAction:
-        state: "on"
+        powerControl: "on"

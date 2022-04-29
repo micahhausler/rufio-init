@@ -31,12 +31,8 @@ type BootDevice string
 type BaseboardManagementConditionType string
 
 const (
-	On     PowerState = "on"
-	Off    PowerState = "off"
-	Status PowerState = "status"
-	Cycle  PowerState = "cycle"
-	Reset  PowerState = "reset"
-	Soft   PowerState = "soft"
+	On  PowerState = "on"
+	Off PowerState = "off"
 )
 
 const (
@@ -51,8 +47,6 @@ const (
 	// ConnectionError represents failure to connect to the BaseboardManagement.
 	ConnectionError BaseboardManagementConditionType = "ConnectionError"
 )
-
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
 // BaseboardManagementSpec defines the desired state of BaseboardManagement
 type BaseboardManagementSpec struct {
