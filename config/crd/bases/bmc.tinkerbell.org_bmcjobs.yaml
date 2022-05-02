@@ -79,18 +79,13 @@ spec:
                           items:
                             description: BootDevice represents boot device of the
                               BaseboardManagement.
-                            enum:
-                            - PXE
-                            - Disk
-                            - BIOS
-                            - CDROM
-                            - Safe
                             type: string
                           type: array
                         efiBoot:
                           default: false
                           description: EFIBoot specifies to EFI boot for the baseboard
-                            management.
+                            management. When true, enables options=efiboot while setting
+                            the boot device. If false, no options are passed.
                           type: boolean
                       required:
                       - device

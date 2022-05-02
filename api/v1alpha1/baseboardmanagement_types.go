@@ -25,7 +25,6 @@ import (
 type PowerState string
 
 // BootDevice represents boot device of the BaseboardManagement.
-// +kubebuilder:validation:Enum=PXE;Disk;BIOS;CDROM;Safe
 type BootDevice string
 
 // BaseboardManagementConditionType represents the condition of the BaseboardManagement.

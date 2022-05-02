@@ -60,6 +60,8 @@ type OneTimeBootDeviceAction struct {
 	Devices []BootDevice `json:"device"`
 
 	// EFIBoot specifies to EFI boot for the baseboard management.
+	// When true, enables options=efiboot while setting the boot device.
+	// If false, no options are passed.
 	// +kubebuilder:default=false
 	EFIBoot bool `json:"efiBoot,omitempty"`
 }
