@@ -28,6 +28,8 @@ const (
 	JobCompleted BMCJobConditionType = "Completed"
 	// JobFailed represents failure in BMC job execution.
 	JobFailed BMCJobConditionType = "Failed"
+	// JobRunning represents a currently executing BMC job.
+	JobRunning BMCJobConditionType = "Running"
 )
 
 // PowerControl represents the power control operation on the baseboard management.
