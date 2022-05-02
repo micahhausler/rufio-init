@@ -93,6 +93,15 @@ type BaseboardManagementCondition struct {
 	Message string `json:"message,omitempty"`
 }
 
+// BaseboardManagementRef defines the reference information to a BaseboardManagement resource.
+type BaseboardManagementRef struct {
+	// Name is unique within a namespace to reference a BaseboardManagement resource.
+	Name string `json:"name"`
+
+	// Namespace defines the space within which the BaseboardManagement name must be unique.
+	Namespace string `json:"namespace"`
+}
+
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 //+kubebuilder:resource:path=baseboardmanagements,scope=Namespaced,categories=tinkerbell,singular=baseboardmanagement,shortName=bm

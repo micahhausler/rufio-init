@@ -28,8 +28,6 @@ const (
 	JobCompleted BMCJobConditionType = "Completed"
 	// JobFailed represents failure in BMC job execution.
 	JobFailed BMCJobConditionType = "Failed"
-	// JobTaskCompleted represents successful completion of a BMC Job task.
-	JobTaskCompleted BMCJobConditionType = "TaskCompleted"
 )
 
 // PowerControl represents the power control operation on the baseboard management.
@@ -46,39 +44,15 @@ const (
 
 // BMCJobSpec defines the desired state of BMCJob
 type BMCJobSpec struct {
+	// BaseboardManagementRef represents the BaseboardManagement resource to execute the job.
+	// All the tasks in the job are executed for the same BaseboardManagement.
+	BaseboardManagementRef BaseboardManagementRef `json:"baseboardManagementRef"`
+
 	// Tasks represents a list of baseboard management actions to be executed.
-	// The tasks are executed in sequentially. Controller waits for one task to complete before executing the next.
+	// The tasks are executed sequentially. Controller waits for one task to complete before executing the next.
 	// If a single task fails, job execution stops and sets condition Failed.
 	// Condition Completed is set only if all the tasks were successful.
 	Tasks []Task `json:"tasks"`
-}
-
-// Task represents the action to be performed.
-// A single task can only perform one type of action.
-// For example either PowerAction or OneTimeBootDeviceAction.
-// +kubebuilder:validation:MaxProperties:=1
-type Task struct {
-	// PowerAction represents a baseboard management power operation.
-	PowerAction *PowerAction `json:"powerAction,omitempty"`
-
-	// OneTimeBootDeviceAction represents a baseboard management one time set boot device operation.
-	OneTimeBootDeviceAction *OneTimeBootDeviceAction `json:"oneTimeBootDeviceAction,omitempty"`
-}
-
-type PowerAction struct {
-	// State represents the requested power state to set for the baseboard management.
-	// +kubebuilder:validation:Enum=PowerOn;HardPowerOff;SoftPowerOff;Status;Cycle;Reset
-	PowerControl PowerControl `json:"powerControl"`
-}
-
-type OneTimeBootDeviceAction struct {
-	// Device represents the boot device to be set for one time boot.
-	// +kubebuilder:validation:Enum=PXE;Disk;BIOS;CDROM;Safe
-	Device BootDevice `json:"device"`
-
-	// EFIBoot specifies to EFI boot for the baseboard management.
-	// +kubebuilder:default=false
-	EFIBoot bool `json:"efiBoot,omitempty"`
 }
 
 // BMCJobStatus defines the observed state of BMCJob
