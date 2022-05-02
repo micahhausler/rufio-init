@@ -39,9 +39,26 @@ spec:
           spec:
             description: BMCJobSpec defines the desired state of BMCJob
             properties:
+              baseboardManagementRef:
+                description: BaseboardManagementRef represents the BaseboardManagement
+                  resource to execute the job. All the tasks in the job are executed
+                  for the same BaseboardManagement.
+                properties:
+                  name:
+                    description: Name is unique within a namespace to reference a
+                      BaseboardManagement resource.
+                    type: string
+                  namespace:
+                    description: Namespace defines the space within which the BaseboardManagement
+                      name must be unique.
+                    type: string
+                required:
+                - name
+                - namespace
+                type: object
               tasks:
                 description: Tasks represents a list of baseboard management actions
-                  to be executed. The tasks are executed in sequentially. Controller
+                  to be executed. The tasks are executed sequentially. Controller
                   waits for one task to complete before executing the next. If a single
                   task fails, job execution stops and sets condition Failed. Condition
                   Completed is set only if all the tasks were successful.
@@ -56,15 +73,20 @@ spec:
                         management one time set boot device operation.
                       properties:
                         device:
-                          description: Device represents the boot device to be set
-                            for one time boot.
-                          enum:
-                          - PXE
-                          - Disk
-                          - BIOS
-                          - CDROM
-                          - Safe
-                          type: string
+                          description: Devices represents the boot devices, in order
+                            for setting one time boot. Currently only the first device
+                            in the slice is used to set one time boot.
+                          items:
+                            description: BootDevice represents boot device of the
+                              BaseboardManagement.
+                            enum:
+                            - PXE
+                            - Disk
+                            - BIOS
+                            - CDROM
+                            - Safe
+                            type: string
+                          type: array
                         efiBoot:
                           default: false
                           description: EFIBoot specifies to EFI boot for the baseboard
@@ -94,6 +116,7 @@ spec:
                   type: object
                 type: array
             required:
+            - baseboardManagementRef
             - tasks
             type: object
           status:
