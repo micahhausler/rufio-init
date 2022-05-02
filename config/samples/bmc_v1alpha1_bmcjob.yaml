@@ -7,7 +7,8 @@ spec:
     - powerAction:
         powerControl: "off"
     - oneTimeBootDeviceAction:
-        device: "pxe"
+        device:
+          - "pxe"
         efiBoot: "false"
     - powerAction:
         powerControl: "on"
