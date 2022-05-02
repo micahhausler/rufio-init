@@ -20,6 +20,16 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// BMCTaskConditionType represents the condition of the BMC Job.
+type BMCTaskConditionType string
+
+const (
+	// TaskCompleted represents successful completion of the BMC Task.
+	TaskCompleted BMCJobConditionType = "Completed"
+	// TaskFailed represents failure in BMC task execution.
+	TaskFailed BMCJobConditionType = "Failed"
+)
+
 // BMCTaskSpec defines the desired state of BMCTask
 type BMCTaskSpec struct {
 	// Task defines the specific action to be performed.
@@ -56,6 +66,27 @@ type OneTimeBootDeviceAction struct {
 
 // BMCTaskStatus defines the observed state of BMCTask
 type BMCTaskStatus struct {
+	// Conditions represents the latest available observations of an object's current state.
+	// +optional
+	Conditions []BMCTaskCondition `json:"conditions,omitempty"`
+
+	// StartTime represents time when the BMCTask started processing.
+	// +optional
+	StartTime *metav1.Time `json:"startTime,omitempty"`
+
+	// CompletionTime represents time when the task was completed.
+	// The completion time is only set when the task finishes successfully.
+	// +optional
+	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+}
+
+type BMCTaskCondition struct {
+	// Type of the BMCTask condition.
+	Type BMCTaskConditionType `json:"type"`
+
+	// Message represents human readable message indicating details about last transition.
+	// +optional
+	Message string `json:"message,omitempty"`
 }
 
 //+kubebuilder:object:root=true
